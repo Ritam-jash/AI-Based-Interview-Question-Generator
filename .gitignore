@@ -88,3 +88,5 @@ temp/
 
 # Pytest
 .pytest_cache/
+
+project_structure.txt
