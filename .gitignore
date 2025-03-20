@@ -1,0 +1,90 @@
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.Python
+build/
+develop-eggs/
+dist/
+downloads/
+eggs/
+.eggs/
+lib/
+lib64/
+parts/
+sdist/
+var/
+wheels/
+*.egg-info/
+.installed.cfg
+*.egg
+
+# Virtual Environment
+venv/
+env/
+ENV/
+.venv/
+
+# API Keys and Secrets
+.env
+*.env
+
+# Streamlit
+.streamlit/
+
+# Flask
+instance/
+.webassets-cache
+flask_session/
+
+# IDE specific files
+.idea/
+.vscode/
+*.swp
+*.swo
+
+# OS specific files
+.DS_Store
+.DS_Store?
+._*
+.Spotlight-V100
+.Trashes
+ehthumbs.db
+Thumbs.db
+
+# Pinecone and FAISS vector storage
+*.faiss
+*.ann
+*.index
+
+# PDF files (optional, uncomment if you don't want to track uploaded resumes)
+# *.pdf
+uploaded_files/
+
+# Log files
+*.log
+
+# Database
+*.db
+*.sqlite3
+
+# Jupyter Notebooks
+.ipynb_checkpoints
+
+# LangChain cache
+.langchain.db
+langchain.db
+
+# Pandas data
+*.pkl
+*.h5
+*.parquet
+*.feather
+
+# Temporary files
+tmp/
+temp/
+
+# Pytest
+.pytest_cache/

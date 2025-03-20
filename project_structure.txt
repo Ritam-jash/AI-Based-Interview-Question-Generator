@@ -1,0 +1,26 @@
+/ai_interview_bot
+├── app/
+│   ├── __init__.py         # Flask app initialization
+│   ├── routes.py           # Handles API endpoints for Streamlit
+│   ├── question_generator.py  # Logic for generating interview questions
+│   ├── resume_parser.py    # Extracts text and skills from resumes
+│   ├── vector_storage.py   # Pinecone/FAISS-based storage for questions
+│   └── config.py           # API keys and configurations
+│
+├── templates/
+│   ├── home.html           # Streamlit homepage layout
+│   ├── results.html        # Displays generated questions
+│
+├── static/
+│   ├── css/
+│   │   └── styles.css      # Custom styles
+│
+├── utils/
+│   ├── ai_utils.py         # AI helper functions
+│   ├── pdf_utils.py        # PDF parsing functions
+│
+├── .env                    # API keys and secrets
+├── requirements.txt        # Dependencies for the project
+├── README.md               # Project Documentation
+├── main.py                 # Streamlit app main file
+└── run.py                  # Runs the application
