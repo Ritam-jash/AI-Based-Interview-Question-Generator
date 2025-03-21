@@ -22,12 +22,24 @@ wheels/
 
 # Virtual Environment
 venv/
-env/
 ENV/
-.venv/
+env/
+.env
+
+# IDE
+.idea/
+.vscode/
+*.swp
+*.swo
+
+# Logs
+*.log
+
+# Local development
+.DS_Store
+Thumbs.db
 
 # API Keys and Secrets
-.env
 *.env
 
 # Streamlit
@@ -38,20 +50,12 @@ instance/
 .webassets-cache
 flask_session/
 
-# IDE specific files
-.idea/
-.vscode/
-*.swp
-*.swo
-
 # OS specific files
-.DS_Store
 .DS_Store?
 ._*
 .Spotlight-V100
 .Trashes
 ehthumbs.db
-Thumbs.db
 
 # Pinecone and FAISS vector storage
 *.faiss
@@ -61,9 +65,7 @@ Thumbs.db
 # PDF files (optional, uncomment if you don't want to track uploaded resumes)
 # *.pdf
 uploaded_files/
-
-# Log files
-*.log
+data/
 
 # Database
 *.db

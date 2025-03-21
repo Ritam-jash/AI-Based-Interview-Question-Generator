@@ -2,20 +2,27 @@ import os
 import re
 import fitz  # PyMuPDF
 import openai
-from langchain.chat_models import ChatOpenAI
+from langchain_community.chat_models import ChatOpenAI
 from langchain.prompts import ChatPromptTemplate
 from langchain.chains import LLMChain
 from app.config import get_openai_api_key
 
 class ResumeParser:
     def __init__(self):
-        # Initialize OpenAI API
-        openai.api_key = get_openai_api_key()
-        self.llm = ChatOpenAI(
-            model_name="gpt-3.5-turbo",
-            temperature=0.2,
-            openai_api_key=get_openai_api_key()
-        )
+        try:
+            # Initialize OpenAI API
+            openai.api_key = get_openai_api_key()
+            if not openai.api_key:
+                raise ValueError("OpenAI API key not found in environment variables")
+                
+            self.llm = ChatOpenAI(
+                model_name="gpt-3.5-turbo",
+                temperature=0.2,
+                openai_api_key=get_openai_api_key()
+            )
+        except Exception as e:
+            print(f"Error initializing ResumeParser: {str(e)}")
+            raise
         
         # Common technical skills for extraction
         self.common_skills = [
@@ -60,12 +67,18 @@ class ResumeParser:
         Returns:
             tuple: (resume_text, extracted_skills)
         """
+        if not os.path.exists(file_path):
+            raise FileNotFoundError(f"Resume file not found: {file_path}")
+            
+        if not file_path.lower().endswith('.pdf'):
+            raise ValueError("Only PDF files are supported")
+            
         try:
             # Extract text from PDF
             resume_text = self._extract_text_from_pdf(file_path)
             
             if not resume_text:
-                return None, []
+                raise ValueError("No text could be extracted from the PDF")
             
             # Extract skills using both pattern matching and AI
             extracted_skills = self._extract_skills(resume_text)
@@ -74,7 +87,7 @@ class ResumeParser:
             
         except Exception as e:
             print(f"Error parsing resume: {str(e)}")
-            return None, []
+            raise
     
     def _extract_text_from_pdf(self, file_path):
         """
@@ -96,11 +109,14 @@ class ResumeParser:
                     # Extract text from the page
                     text += page.get_text()
             
+            if not text.strip():
+                raise ValueError("No text content found in the PDF")
+                
             return text
             
         except Exception as e:
             print(f"Error extracting text from PDF: {str(e)}")
-            return ""
+            raise
     
     def _extract_skills(self, resume_text):
         """
@@ -112,16 +128,21 @@ class ResumeParser:
         Returns:
             list: List of extracted skills
         """
-        # Extract skills using pattern matching
-        pattern_skills = self._extract_skills_by_pattern(resume_text)
-        
-        # Extract skills using AI
-        ai_skills = self._extract_skills_by_ai(resume_text)
-        
-        # Combine and deduplicate skills
-        all_skills = list(set(pattern_skills + ai_skills))
-        
-        return all_skills
+        try:
+            # Extract skills using pattern matching
+            pattern_skills = self._extract_skills_by_pattern(resume_text)
+            
+            # Extract skills using AI
+            ai_skills = self._extract_skills_by_ai(resume_text)
+            
+            # Combine and deduplicate skills
+            all_skills = list(set(pattern_skills + ai_skills))
+            
+            return all_skills
+            
+        except Exception as e:
+            print(f"Error extracting skills: {str(e)}")
+            return []
     
     def _extract_skills_by_pattern(self, resume_text):
         """
@@ -133,19 +154,24 @@ class ResumeParser:
         Returns:
             list: List of extracted skills
         """
-        skills = []
-        
-        # Clean and normalize the text
-        clean_text = resume_text.lower()
-        
-        # Check for each skill in the common skills list
-        for skill in self.common_skills:
-            # Create a regex pattern that matches the skill as a whole word
-            pattern = r'\b' + re.escape(skill.lower()) + r'\b'
-            if re.search(pattern, clean_text):
-                skills.append(skill)
-        
-        return skills
+        try:
+            skills = []
+            
+            # Clean and normalize the text
+            clean_text = resume_text.lower()
+            
+            # Check for each skill in the common skills list
+            for skill in self.common_skills:
+                # Create a regex pattern that matches the skill as a whole word
+                pattern = r'\b' + re.escape(skill.lower()) + r'\b'
+                if re.search(pattern, clean_text):
+                    skills.append(skill)
+            
+            return skills
+            
+        except Exception as e:
+            print(f"Error extracting skills by pattern: {str(e)}")
+            return []
     
     def _extract_skills_by_ai(self, resume_text):
         """
@@ -157,38 +183,38 @@ class ResumeParser:
         Returns:
             list: List of extracted skills
         """
-        # Prepare the prompt
-        prompt_template = """
-        You are a skilled resume parser. Extract technical and soft skills from the following resume text.
-        
-        Resume text:
-        ```
-        {resume_text}
-        ```
-        
-        Guidelines:
-        - Extract both technical skills (programming languages, frameworks, tools) and soft skills (leadership, communication, etc.)
-        - Focus on specific skills, not generic descriptions
-        - Look for skills in the Skills section, as well as those mentioned in work experience and projects
-        - Return a comma-separated list of skills, with no additional text or explanation
-        
-        Example output: Python, JavaScript, React, AWS, Docker, Project Management, Team Leadership
-        """
-        
-        # Create the prompt
-        prompt = ChatPromptTemplate.from_template(template=prompt_template)
-        
-        # Create the chain
-        chain = LLMChain(llm=self.llm, prompt=prompt)
-        
-        # Run the chain
         try:
+            # Prepare the prompt
+            prompt_template = """
+            You are a skilled resume parser. Extract technical and soft skills from the following resume text.
+            
+            Resume text:
+            ```
+            {resume_text}
+            ```
+            
+            Guidelines:
+            - Extract both technical skills (programming languages, frameworks, tools) and soft skills (leadership, communication, etc.)
+            - Focus on specific skills, not generic descriptions
+            - Look for skills in the Skills section, as well as those mentioned in work experience and projects
+            - Return a comma-separated list of skills, with no additional text or explanation
+            
+            Example output: Python, JavaScript, React, AWS, Docker, Project Management, Team Leadership
+            """
+            
+            # Create the prompt
+            prompt = ChatPromptTemplate.from_template(template=prompt_template)
+            
+            # Create the chain
+            chain = LLMChain(llm=self.llm, prompt=prompt)
+            
+            # Run the chain
             result = chain.run(
                 resume_text=resume_text[:3000]  # Limit text to avoid token limits
             )
             
             # Parse the comma-separated list
-            skills = [skill.strip() for skill in result.split(',')]
+            skills = [skill.strip() for skill in result.split(',') if skill.strip()]
             
             return skills
             

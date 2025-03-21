@@ -1,103 +1,95 @@
-# AI-Based Interview Question Generator 🤖
+# AI Interview Question Generator
 
-A smart application that generates tailored interview questions based on job roles, experience levels, and skills. Users can also upload their resumes to receive personalized interview preparation questions.
+An intelligent interview preparation tool that generates personalized technical and behavioral questions based on job roles, skills, and experience levels.
 
-## 🎯 Features
+## 🌟 Features
 
-- Generate realistic interview questions based on job role & experience level
-- Resume parsing to extract skills & tailor questions to candidate profiles
-- Store & retrieve past questions using vector database (Pinecone)
-- Interactive user interface built with Streamlit
+- Dynamic question generation using OpenAI GPT
+- Role-specific question templates
+- Resume-based question customization
+- Mix of technical and behavioral questions
+- Dark mode UI with professional design
+- Fallback to local question bank when needed
 
-## 🛠️ Tech Stack
+## 🔧 Project Structure
 
-- **Backend:** Python, Flask, LangChain, OpenAI API
-- **Frontend:** Streamlit
-- **Database:** Pinecone (vector storage)
-- **Resume Parsing:** PyMuPDF, pdfplumber
-- **Data Processing:** Pandas, FAISS
+```
+ai_interview_bot/
+├── .streamlit/
+│   └── config.toml         # Streamlit configuration
+├── app/
+│   ├── __init__.py        # Package initialization
+│   ├── question_generator.py   # Question generation logic
+│   ├── vector_storage.py      # Vector storage handling
+│   ├── resume_parser.py       # Resume parsing functionality
+│   ├── models.py             # Data models and schemas
+│   └── config.py             # Application configuration
+├── utils/
+│   ├── __init__.py          # Utils package initialization
+│   ├── text_processing.py    # Text processing utilities
+│   ├── file_handler.py       # File handling utilities
+│   ├── api_wrapper.py        # API interaction utilities
+│   └── error_handler.py      # Error handling utilities
+├
+├── streamlit_app.py          # Main application file
+├── requirements.txt          # Project dependencies
+├── runtime.txt              # Python version specification
+├── .env                     # Environment variables (create this)
+├── .gitignore              # Git ignore configuration
+└── LICENSE                 # Project license file
+```
 
-## 📋 Prerequisites
-
-- Python 3.8+
-- OpenAI API key
-- Pinecone API key and environment
-
-## 🚀 Installation
+## 🚀 Setup & Installation
 
 1. Clone the repository:
-   ```bash
-   git clone https://github.com/yourusername/ai-interview-bot.git
-   cd ai-interview-bot
-   ```
+```bash
+git clone https://github.com/Ritam-jash/AI-Based-Interview-Question-Generator
+cd ai_interview_bot
+```
 
-2. Create a virtual environment and activate it:
-   ```bash
-   python -m venv venv
-   source venv/bin/activate  # On Windows: venv\Scripts\activate
-   ```
+2. Create a virtual environment:
+```bash
+python -m venv venv
+source venv/bin/activate  # On Windows: venv\Scripts\activate
+```
 
 3. Install dependencies:
-   ```bash
-   pip install -r requirements.txt
-   ```
-
-4. Create a `.env` file in the root directory with your API keys:
-   ```
-   OPENAI_API_KEY=your_openai_api_key
-   PINECONE_API_KEY=your_pinecone_api_key
-   PINECONE_ENV=your_pinecone_environment
-   ```
-
-## 🖥️ Usage
-
-1. Start the Streamlit application:
-   ```bash
-   streamlit run main.py
-   ```
-
-2. Open your browser and go to `http://localhost:8501`
-
-3. Enter the job role, experience level, and optionally upload a resume
-
-4. Click "Generate Questions" to receive tailored interview questions
-
-## 📁 Project Structure
-
-```
-/ai_interview_bot
-├── app/
-│   ├── __init__.py         # Flask app initialization
-│   ├── routes.py           # API endpoints for Streamlit
-│   ├── question_generator.py  # Logic for generating questions
-│   ├── resume_parser.py    # Resume text/skills extraction
-│   ├── vector_storage.py   # Pinecone/FAISS integration
-│   └── config.py           # API keys and configurations
-│
-├── templates/              # HTML templates (if using Flask)
-│
-├── static/                 # Static files (CSS, JS)
-│
-├── utils/                  # Utility functions
-│
-├── .env                    # Environment variables (not tracked)
-├── requirements.txt        # Project dependencies
-├── README.md               # Project documentation
-├── main.py                 # Streamlit app entry point
-└── run.py                  # Application runner
+```bash
+pip install -r requirements.txt
 ```
 
-## 🌟 Future Enhancements
+4. Create a `.env` file with your API keys:
+```env
+OPENAI_API_KEY=your_openai_api_key
+PINECONE_API_KEY=your_pinecone_api_key
+PINECONE_ENVIRONMENT=your_pinecone_environment
+PINECONE_INDEX_NAME=your_index_name
+```
 
-- Speech-to-text input for hands-free operation
-- AI-based answer suggestions for practice
-- Mock interview mode with feedback
-- Integration with LinkedIn profiles for skill extraction
-- Enhanced analytics on question difficulty and relevance
+## 🎯 Running the Application
+
+1. Local Development:
+```bash
+streamlit run streamlit_app.py
+```
+
+2. Access the application:
+- Open your browser and go to `http://localhost:8501`
+
+## 🌐 Deployment
+
+The application is deployed on Streamlit Cloud:
+[Add your Streamlit Cloud URL here]
+
+## 💡 Usage
+
+1. Select your target job role
+2. Enter your experience level and skills
+3. (Optional) Upload your resume for personalized questions
+4. Get customized interview questions
+5. Practice and prepare!
 
 ## 🤝 Contributing
-
-Contributions are welcome! Please feel free to submit a Pull Request.
 
 1. Fork the repository
 2. Create your feature branch (`git checkout -b feature/AmazingFeature`)
@@ -105,16 +97,12 @@ Contributions are welcome! Please feel free to submit a Pull Request.
 4. Push to the branch (`git push origin feature/AmazingFeature`)
 5. Open a Pull Request
 
-## 📄 License
+## 📝 License
 
 This project is licensed under the MIT License - see the LICENSE file for details.
 
-## 🙏 Acknowledgements
+## 🙏 Acknowledgments
 
-- OpenAI for providing the GPT models
-- Pinecone for vector database capabilities
-- Streamlit for the interactive UI framework
-
----
-
-Built with ❤️ by RITAM JASH
+- OpenAI for GPT API
+- Streamlit for the web framework
+- All contributors and users of this project

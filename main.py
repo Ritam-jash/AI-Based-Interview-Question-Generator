@@ -25,6 +25,10 @@ def main():
     st.sidebar.title("Navigation")
     page = st.sidebar.radio("Go to", ["Generate Questions", "Upload Resume", "View Saved Questions"])
     
+    # Adding attribution to Ritam in the sidebar
+    st.sidebar.markdown("---")
+    st.sidebar.markdown("💻 Designed and developed by Ritam")
+    
     if page == "Generate Questions":
         generate_questions_page()
     elif page == "Upload Resume":
@@ -245,5 +249,18 @@ def display_questions(questions):
         with st.expander(f"Question {i+1}"):
             st.write(question)
 
+# Footer with attribution
+def display_footer():
+    st.markdown("---")
+    st.markdown(
+        """
+        <div style="text-align: center; color: #888888; padding: 10px;">
+            Made with ❤️ by Ritam
+        </div>
+        """, 
+        unsafe_allow_html=True
+    )
+
 if __name__ == "__main__":
     main()
+    display_footer()
